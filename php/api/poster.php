@@ -1,5 +1,5 @@
 <?php
-include("util/db_util.php");
+require_once(dirname(__DIR__)."/api/util/db_util.php");
 
 function PosterCreate($name, $descr, $place, $date, $img)
 {
@@ -24,3 +24,5 @@ function PosterGetByDate($date) {
     $result = ExecuteQuery("SELECT * FROM event WHERE date >= '$date' AND date < '$date'+1");
     return $result;
 }
+
+?>

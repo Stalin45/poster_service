@@ -1,4 +1,4 @@
-<?php require_once(dirname(__DIR__)."../api/util/db_util.php");
+<?php
     ob_start();
     session_start();
 ?>
