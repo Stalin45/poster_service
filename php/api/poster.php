@@ -8,8 +8,8 @@ function PosterCreate($name, $descr, $place, $date, $img)
     return $result;
 }
 
-function PostersGetByCurrentUser() {
-    $user_id = UserGetByName($_SESSION('login'));
+function PostersGetByCurrentUser($login) {
+    $user_id = UserGetByName($login);
     $result = ExecuteQuery("SELECT * FROM event WHERE user_id = '$user_id'");
     return $result;
 }

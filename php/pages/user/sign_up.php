@@ -1,17 +1,19 @@
-<?php include("../../parts/header.php"); ?>
 <?php
+include("../../parts/header.php");
 include("../../api/user.php");
+
+$errors= array();
+$success = array();
+
 extract($_POST);
 if (isset($submit)) {
-    echo "<b>Submitted</b>";
     try {
         UserCreateRegistered($i_login, $i_password, $i_email);
-        echo "<b>User created</b>";
-        $is_error = true;
-        $error_text = "Successfully registered!";
+        $is_success = true;
+        $success[] = "Successfully registered!";
     } catch (Exception $exception) {
         $is_error = true;
-        $error_text = $exception;
+        $errors[] = $exception;
     }
 }
 ?>
@@ -20,14 +22,14 @@ if (isset($submit)) {
         {
             if(document.sign_up_form.i_login.value=="")
             {
-                alert("Plese Enter Login Id");
+                alert("Plese Enter Login");
                 document.sign_up_form.lid.focus();
                 return false;
             }
 
             if(document.sign_up_form.i_password.value=="")
             {
-                alert("Plese Enter Your Password");
+                alert("Plese Enter Password");
                 document.sign_up_form.pass.focus();
                 return false;
             }
@@ -136,7 +138,16 @@ if (isset($submit)) {
                         <td colspan="2" class="error">
                             <?php
                             if (isset($is_error)) {
-                                echo $error_text;
+                                echo $errors;
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="success">
+                            <?php
+                            if (isset($is_success)) {
+                                echo $success;
                             }
                             ?>
                         </td>

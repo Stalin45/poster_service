@@ -1,4 +1,10 @@
-<?php include("../../parts/header.php"); ?>
+<?php
+include("../../parts/header.php");
+
+$json_resp = "$request()";
+$resp_array = json_decode($url_resp, true);
+
+?>
     <div class="container">
 
         <?php include("../../parts/sidebar.php"); ?>
