@@ -1,22 +1,10 @@
 <?php
 error_reporting(1);
 
-function ExecuteQuery($SQL)
+function ExecuteUpdateQuery($SQL)
 {
     $con = mysql_connect("localhost", "root", "");
-    mysql_select_db("tech_forum", $con);
-
-    $rows = mysql_query($SQL);
-
-    mysql_close();
-
-    return $rows;
-}
-
-function ExecuteNonQuery($SQL)
-{
-    $con = mysql_connect("localhost", "root", "");
-    mysql_select_db("tech_forum", $con);
+    mysql_select_db("poster_service_db", $con);
 
     $result = mysql_query($SQL);
 
@@ -25,4 +13,15 @@ function ExecuteNonQuery($SQL)
     return $result;
 }
 
+function ExecuteSelectQuery($SQL)
+{
+    $con = mysql_connect("localhost", "root", "");
+    mysql_select_db("poster_service_db", $con);
+
+    $rows = mysql_query($SQL);
+
+    mysql_close();
+
+    return mysql_fetch_array($rows);
+}
 ?>
