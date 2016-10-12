@@ -9,10 +9,8 @@ extract($_POST);
 if (isset($submit)) {
     $result = UserCreateRegistered($i_login, $i_password, $i_email);
     if ($result) {
-        $is_success = true;
         $success[] = "Successfully registered!";
     } else {
-        $is_error = true;
         $errors[] = $result;
     }
 }
@@ -131,7 +129,7 @@ if (isset($submit)) {
                     <tr>
                         <td id="error" colspan="2" class="error">
                             <?php
-                            if (isset($is_error)) {
+                            if (count($errors) > 0) {
                                 echo implode("<br>", $errors);
                             }
                             ?>
@@ -140,7 +138,7 @@ if (isset($submit)) {
                     <tr>
                         <td id="success" colspan="2" class="success">
                             <?php
-                            if (isset($is_success)) {
+                            if (count($success) > 0) {
                                 echo implode("<br>", $success);
                             }
                             ?>

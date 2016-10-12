@@ -1,34 +1,45 @@
 <?php include("../../parts/header.php"); ?>
 
 <?php
+$errors = array();
+$success = array();
+
+if (!isset($_SESSION["authenticated"])) {
+    $errors[] = "You are not logged in!";
+    return;
+}
+
+if (!in_array("Registered", $_SESSION["roles"])) {
+    $errors[] = "You don't have rights to creater your own posters!";
+    return;
+}
+
 include("../../api/poster.php");
 
 $login = $_SESSION['login'];
-$errors= array();
-$success = array();
 
 // Check if image file is a actual image or fake image
-if(isset($_FILES['i_img'])){
+if (isset($_FILES['i_img'])) {
     $file_name = $_FILES['image']['name'];
-    $file_size =$_FILES['image']['size'];
-    $file_tmp =$_FILES['image']['tmp_name'];
-    $file_type=$_FILES['image']['type'];
-    $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
+    $file_size = $_FILES['image']['size'];
+    $file_tmp = $_FILES['image']['tmp_name'];
+    $file_type = $_FILES['image']['type'];
+    $file_ext = strtolower(end(explode('.', $_FILES['image']['name'])));
 
-    $expensions= array("jpeg","jpg","png");
+    $expensions = array("jpeg", "jpg", "png");
 
-    if(in_array($file_ext, $expensions)=== false){
-        $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+    if (in_array($file_ext, $expensions) === false) {
+        $errors[] = "Extension not allowed, please choose a JPEG or PNG file.";
     }
 
-    if($file_size > 2097152){
-        $errors[]='File size must be excately 2 MB';
+    if ($file_size > 2097152) {
+        $errors[] = 'File size must be excately 2 MB';
     }
 
-    if(empty($errors) == true){
-        $i_img = "uploads/".$file_name;
+    if (empty($errors) == true) {
+        $i_img = "uploads/" . $file_name;
         move_uploaded_file($file_tmp, $i_img);
-    }else{
+    } else {
         $is_error = true;
         return;
     }
@@ -39,48 +50,40 @@ if (isset($submit) && !isset($is_error)) {
     //TODO: move try - catch into API
     try {
         PosterCreate($login, $i_name, $i_descr, $i_place, $i_date, $i_img);
-        $is_success = true;
         $success[] = "Successfully created!";
     } catch (Exception $exception) {
-        $is_error = true;
         $errors[] = $exception;
     }
 }
 ?>
 
     <script language="javascript">
-        function check()
-        {
-            if(document.create_poster_form.i_login.value=="")
-            {
+        function check() {
+            if (document.create_poster_form.i_login.value == "") {
                 alert("Plese Enter Login Id");
                 document.create_poster_form.lid.focus();
                 return false;
             }
 
-            if(document.create_poster_form.i_descr.value=="")
-            {
+            if (document.create_poster_form.i_descr.value == "") {
                 alert("Plese enter the description");
                 document.create_poster_form.i_descr.focus();
                 return false;
             }
 
-            if(document.create_poster_form.i_place.value=="")
-            {
+            if (document.create_poster_form.i_place.value == "") {
                 alert("Plese enter the place");
                 document.create_poster_form.i_place.focus();
                 return false;
             }
 
-            if(document.create_poster_form.i_date.value=="")
-            {
+            if (document.create_poster_form.i_date.value == "") {
                 alert("Plese choose the date");
                 document.create_poster_form.i_date.focus();
                 return false;
             }
 
-            if(document.create_poster_form.i_img.value=="")
-            {
+            if (document.create_poster_form.i_img.value == "") {
                 alert("Plese choose the image");
                 document.create_poster_form.i_img.focus();
                 return false;
@@ -149,7 +152,7 @@ if (isset($submit) && !isset($is_error)) {
                             </div>
                         </td>
                         <td>
-                            <input name="i_img" type="file" id="i_img" >
+                            <input name="i_img" type="file" id="i_img">
                         </td>
                     </tr>
                     <tr>
@@ -163,19 +166,19 @@ if (isset($submit) && !isset($is_error)) {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="error">
+                        <td id="error" colspan="2" class="error">
                             <?php
-                            if (isset($is_error)) {
-                                echo $errors;
+                            if (count($errors) > 0) {
+                                echo implode("<br>", $errors);
                             }
                             ?>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="success">
+                        <td id="success" colspan="2" class="success">
                             <?php
-                            if (isset($is_error)) {
-                                echo $errors;
+                            if (count($success) > 0) {
+                                echo $success;
                             }
                             ?>
                         </td>

@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS user
   login VARCHAR(20) NOT NULL,
   pass VARCHAR(6) NOT NULL,
   email VARCHAR(50) DEFAULT NULL,
-  constraint pk_user_id primary key (user_id)
+  constraint pk_user_id primary key (user_id),
+  constraint uc_login unique (login)
 ) ENGINE InnoDB CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS role

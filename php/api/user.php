@@ -13,6 +13,17 @@ function UserGetByName($user_name)
     return $result;
 }
 
+function UserGetRolesByName($user_name)
+{
+    $result = ExecuteSelectQuery("SELECT role.role_name 
+                                  FROM role 
+                                  INNER JOIN user_role ON (role.role_id = user_role.role_id)
+                                  INNER JOIN user      ON (user_role.user_id = user.user_id) 
+                                  WHERE login = '$user_name'");
+    return $result;
+}
+
+
 function UserCreateRegistered($login, $pass, $email)
 {
     $query_user = "INSERT INTO user (login, pass, email) VALUES ('$login', '$pass', '$email')";

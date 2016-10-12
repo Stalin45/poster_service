@@ -7,7 +7,9 @@ $success = array();
 extract($_POST);
 if (isset($submit)) {
     if (UserIsRegistered($i_login, $i_password)) {
-        $_SESSION['alogin'] = "true";
+        $_SESSION['authenticated'] = "true";
+        $_SESSION['login'] = $i_login;
+        $_SESSION['roles'] = UserGetRolesByName($i_login);
         header("location: ../../../index.php");
     } else {
         $errors[] = "Invalid User Name or Password";
@@ -90,17 +92,8 @@ if (isset($submit)) {
                         <tr>
                             <td id="error" colspan="2" class="error">
                                 <?php
-                                if (isset($is_error)) {
+                                if (count($errors) > 0) {
                                     echo implode("<br>", $errors);
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="success" colspan="2" class="success">
-                                <?php
-                                if (isset($is_success)) {
-                                    echo implode("<br>", $success);
                                 }
                                 ?>
                             </td>

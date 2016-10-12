@@ -23,6 +23,15 @@
     <div class="header">
         <div class="header-text">
             <p>I am the header</p>
+            <div style = "vertical-align: bottom", align="right">
+                <?php
+                    if (isset($_SESSION["authenticated"])) {
+                        echo "<p>Hello, ".$_SESSION['login']."</p>";
+                    } else {
+                        echo "Sugn in block";
+                    }
+                ?>
+            </div>
         </div>
     </div>
 
