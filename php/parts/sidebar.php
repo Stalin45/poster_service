@@ -29,6 +29,9 @@
                 <li>
                     <a href="/poster_service/php/pages/user/sign_in.php">Sign In</a>
                 </li>
+                <li>
+                    <a href="/poster_service/php/pages/user/sign_out.php">Sign Out</a>
+                </li>
             </ul>
         </div>
 </div>

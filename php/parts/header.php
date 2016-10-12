@@ -1,6 +1,9 @@
 <?php
     ob_start();
     session_start();
+    if (isset($_SESSION['alogin'])) {
+        echo "YOU ARE LOGGED IN!!!";
+    }
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

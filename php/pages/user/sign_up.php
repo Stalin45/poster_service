@@ -2,72 +2,66 @@
 include("../../parts/header.php");
 include("../../api/user.php");
 
-$errors= array();
+$errors = array();
 $success = array();
 
 extract($_POST);
 if (isset($submit)) {
-    try {
-        UserCreateRegistered($i_login, $i_password, $i_email);
+    $result = UserCreateRegistered($i_login, $i_password, $i_email);
+    if ($result) {
         $is_success = true;
         $success[] = "Successfully registered!";
-    } catch (Exception $exception) {
+    } else {
         $is_error = true;
-        $errors[] = $exception;
+        $errors[] = $result;
     }
 }
 ?>
     <script language="javascript">
-        function check()
-        {
-            if(document.sign_up_form.i_login.value=="")
-            {
-                alert("Plese Enter Login");
-                document.sign_up_form.lid.focus();
-                return false;
+        function check() {
+            var errors = [];
+            if (document.sign_up_form.i_login.value == "") {
+                errors.push("Login is empty");
+                document.sign_up_form.i_login.focus();
             }
 
-            if(document.sign_up_form.i_password.value=="")
-            {
-                alert("Plese Enter Password");
-                document.sign_up_form.pass.focus();
-                return false;
+            if (document.sign_up_form.i_password.value == "") {
+                errors.push("Password is empty");
+                document.sign_up_form.i_password.focus();
             }
 
-            if(document.sign_up_form.i_cpassword.value=="")
-            {
-                alert("Plese Enter Confirm Password");
-                document.sign_up_form.cpass.focus();
-                return false;
+            if (document.sign_up_form.i_cpassword.value == "") {
+                errors.push("Confirm Password is empty");
+                document.sign_up_form.i_cpassword.focus();
+            } else {
+                if (document.sign_up_form.i_password.value != document.sign_up_form.i_cpassword.value) {
+                    errors.push("Confirm password does not match");
+                    document.sign_up_form.i_cpassword.focus();
+                }
             }
 
-            if(document.sign_up_form.i_password.value!=document.sign_up_form.i_cpassword.value)
-            {
-                alert("Confirm Password does not matched");
-                document.sign_up_form.cpass.focus();
-                return false;
-            }
-
-            if(document.sign_up_form.email.value=="")
-            {
-                alert("Plese Enter your Email Address");
-                document.sign_up_form.email.focus();
-                return false;
-            }
-
-            e=document.sign_up_form.i_email.value;
-            f1=e.indexOf('@');
-            f2=e.indexOf('@',f1+1);
-            e1=e.indexOf('.');
-            e2=e.indexOf('.',e1+1);
-            n=e.length;
-
-            if(!(f1>0 && f2==-1 && e1>0 && e2==-1 && f1!=e1+1 && e1!=f1+1 && f1!=n-1 && e1!=n-1))
-            {
-                alert("Please Enter valid Email");
+            if (document.sign_up_form.i_email.value == "") {
+                errors.push("Email address is empty");
                 document.sign_up_form.i_email.focus();
+            } else {
+                e = document.sign_up_form.i_email.value;
+                f1 = e.indexOf('@');
+                f2 = e.indexOf('@', f1 + 1);
+                e1 = e.indexOf('.');
+                e2 = e.indexOf('.', e1 + 1);
+                n = e.length;
+
+                if (!(f1 > 0 && f2 == -1 && e1 > 0 && e2 == -1 && f1 != e1 + 1 && e1 != f1 + 1 && f1 != n - 1 && e1 != n - 1)) {
+                    errors.push("Please enter valid email");
+                    document.sign_up_form.i_email.focus();
+                }
+            }
+
+            if (errors.length > 0) {
+                document.getElementById("error").innerHTML = errors.join("<br/>");
                 return false;
             }
+
             return true;
         }
     </script>
@@ -135,19 +129,19 @@ if (isset($submit)) {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="error">
+                        <td id="error" colspan="2" class="error">
                             <?php
                             if (isset($is_error)) {
-                                echo $errors;
+                                echo implode("<br>", $errors);
                             }
                             ?>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="success">
+                        <td id="success" colspan="2" class="success">
                             <?php
                             if (isset($is_success)) {
-                                echo $success;
+                                echo implode("<br>", $success);
                             }
                             ?>
                         </td>

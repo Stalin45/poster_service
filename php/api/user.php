@@ -33,4 +33,14 @@ function UserCreateRegistered($login, $pass, $email)
         return $error;
     }
 }
+
+function UserIsRegistered($login, $password)
+{
+    $result = ExecuteSelectQuery("SELECT user_id FROM user WHERE login = '$login' AND pass = '$password'");
+    if (count($result) > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 ?>
