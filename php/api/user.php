@@ -10,17 +10,26 @@ require_once(dirname(__DIR__)."/api/util/db_util.php");
 function UserGetByName($user_name)
 {
     $result = ExecuteSelectQuery("SELECT user_id FROM user WHERE login = '$user_name'");
-    return $result;
+    if (count($result) > 0) {
+        return $result[0]['user_id'];
+    } else {
+        return false;
+    }
 }
 
 function UserGetRolesByName($user_name)
 {
-    $result = ExecuteSelectQuery("SELECT role.role_name 
+    $query_result = ExecuteSelectQuery("SELECT role.role_name 
                                   FROM role 
                                   INNER JOIN user_role ON (role.role_id = user_role.role_id)
                                   INNER JOIN user      ON (user_role.user_id = user.user_id) 
                                   WHERE login = '$user_name'");
-    return $result;
+
+    $resultArray = array();
+    foreach ($query_result as $row) {
+        $resultArray[] = $row["role_name"];
+    }
+    return $resultArray;
 }
 
 
@@ -29,8 +38,7 @@ function UserCreateRegistered($login, $pass, $email)
     $query_user = "INSERT INTO user (login, pass, email) VALUES ('$login', '$pass', '$email')";
     $is_user_created = ExecuteUpdateQuery($query_user);
     if ($is_user_created) {
-        $user_arr = UserGetByName($login);
-        $user_id = $user_arr['user_id'];
+        $user_id = UserGetByName($login);
         $query_user_role = "INSERT INTO user_role (role_id, user_id) VALUES (1, '$user_id')";
         $is_role_appointed = ExecuteUpdateQuery($query_user_role);
         if ($is_role_appointed) {

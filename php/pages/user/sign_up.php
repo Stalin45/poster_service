@@ -11,7 +11,7 @@ if (isset($submit)) {
     if ($result) {
         $success[] = "Successfully registered!";
     } else {
-        $errors[] = $result;
+        $errors[] = "Error occred while registering";
     }
 }
 ?>

@@ -5,7 +5,7 @@ include("user.php");
 function PosterCreate($login, $name, $descr, $place, $date, $img)
 {
     $user_id = UserGetByName($login);
-    $result = ExecuteUpdateQuery("INSERT INTO event (name, description, place, date, img_ref, user_id) VALUES($name, $descr, $place, $date, $img, $user_id)");
+    $result = ExecuteUpdateQuery("INSERT INTO event (name, description, place, date, img_ref, user_id) VALUES('$name', '$descr', '$place', '$date', '$img', '$user_id')");
     return $result;
 }
 
@@ -23,6 +23,11 @@ function PostersGetByUserName($user_name) {
 
 function PosterGetByDate($date) {
     $result = ExecuteSelectQuery("SELECT * FROM event WHERE date >= '$date' AND date < '$date' + INTERVAL 1 DAY");
+    return $result;
+}
+
+function PosterGetAll() {
+    $result = ExecuteSelectQuery("SELECT * FROM event");
     return $result;
 }
 

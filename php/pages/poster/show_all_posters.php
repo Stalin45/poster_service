@@ -5,21 +5,9 @@
 $errors = array();
 $success = array();
 
-if (!isset($_SESSION["authenticated"])) {
-    $errors[] = "You are not logged in!";
-    return;
-}
-
-if (!in_array("Registered", $_SESSION["roles"])) {
-    $errors[] = "You don't have rights to creater your own posters!";
-    return;
-}
-
 include("../../api/poster.php");
 
-$login = $_SESSION['login'];
-
-$result = PostersGetByCurrentUser($login);
+$result = PosterGetAll();
 
 //$json_resp = "$request()";
 //$resp_array = json_decode($url_resp, true);
@@ -33,41 +21,41 @@ $result = PostersGetByCurrentUser($login);
         <div class="content">
             <div class="content-text">
                 <?php
-                if (isset($result)) {
-                    echo '<p>You published ' . count($result) . ' poster(s) on our website</p>';
+                if (count($result) > 0) {
+                    echo '<p>Found ' . count($result) . ' poster(s) on our website</p>';
 
-                    echo '<table width="240" border="0" align="center">
+                    echo '<table width="500" border="0" align="center">
                                 <tr>
-                                    <th width="50">
+                                    <th width="100">
                                         Name
                                     </th>
-                                    <th width="50">
+                                    <th width="100">
                                         Place
                                     </th>
-                                    <th width="50">
+                                    <th width="100">
                                         Date
                                     </th>
-                                    <th width="50">
+                                    <th width="100">
                                         Description
                                     </th>
-                                    <th width="40">
+                                    <th width="100">
                                         IMG
                                     </th>
                                 </tr>';
 
-                    foreach ($result as list($name, $place, $date, $descr, $img)) {
+                    foreach ($result as $row) {
                         echo '<tr>
-                                <td>' . $name . '</td>
-                                <td>' . $place . '</td>
-                                <td>' . $date . '</td>
-                                <td>' . $descr . '</td>
-                                <td>' . $img . '</td>
+                                <td>' . $row['name'] . '</td>
+                                <td>' . $row['place'] . '</td>
+                                <td>' . $row['date'] . '</td>
+                                <td>' . $row['description'] . '</td>
+                                <td><img src="/poster_service/upload/' . $row['img_ref'] . '" width="100" height="100"  ></td>
                               </tr>';
                     }
-                }
-                ?>
-                </table>
 
+                    echo '</table>';
+                } else {
+                    echo '<p>Posters not found</p>';
                 }
                 ?>
             </div>

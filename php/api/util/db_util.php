@@ -22,6 +22,12 @@ function ExecuteSelectQuery($SQL)
 
     mysql_close();
 
-    return mysql_fetch_array($rows);
+    $resultArray = array();
+
+    while( $row = mysql_fetch_assoc( $rows)){
+        $resultArray[] = $row;
+    }
+
+    return $resultArray;
 }
 ?>

@@ -15,10 +15,6 @@ if (isset($submit)) {
         $errors[] = "Invalid User Name or Password";
     }
 }
-//} else if (!isset($_SESSION[alogin])) {
-//    echo "<BR><BR><BR><BR><div class=head1> Your are not logged in<br> Please <a href=index.php>Login</a><div>";
-//    exit;
-//}
 ?>
 
     <script language="javascript">

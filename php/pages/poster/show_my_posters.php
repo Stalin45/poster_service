@@ -10,7 +10,7 @@ if (!isset($_SESSION["authenticated"])) {
     return;
 }
 
-if (!in_array("Registered", $_SESSION["roles"])) {
+if (!in_array("user", $_SESSION["roles"])) {
     $errors[] = "You don't have rights to creater your own posters!";
     return;
 }
@@ -30,9 +30,9 @@ $result = PostersGetByCurrentUser($login);
         <div class="content">
             <div class="content-text">
                 <?php
-                if (isset($result)) {
-                    echo '<p>You published ' . count($result) . ' poster(s) on our website</p>';
+                echo '<p>You published ' . count($result) . ' poster(s) on our website</p>';
 
+                if (count($result) > 0) {
                     echo '<table width="240" border="0" align="center">
                                 <tr>
                                     <th width="50">
@@ -52,13 +52,13 @@ $result = PostersGetByCurrentUser($login);
                                     </th>
                                 </tr>';
 
-                    foreach ($result as list($name, $place, $date, $descr, $img)) {
+                    foreach ($result as $row) {
                         echo '<tr>
-                                <td>' . $name . '</td>
-                                <td>' . $place . '</td>
-                                <td>' . $date . '</td>
-                                <td>' . $descr . '</td>
-                                <td>' . $img . '</td>
+                                <td>' . $row['name'] . '</td>
+                                <td>' . $row['place'] . '</td>
+                                <td>' . $row['date'] . '</td>
+                                <td>' . $row['description'] . '</td>
+                                <td><img src="/poster_service/upload/' . $row['img_ref'] . '" width="100" height="100"  ></td>
                               </tr>';
                     }
 

@@ -1,13 +1,13 @@
 <div class="sidebar">
     <?php
     if (isset($_SESSION["authenticated"])) {
-        if (in_array("Registered", $_SESSION["roles"])) {
+        if (in_array("user", $_SESSION["roles"])) {
             echo
             '<div id="admin-panel">
             <ul class="nav nav-list bs-docs-sidenav">
                 <li class="nav-header">
-            Author menu
-            </li>
+                    Author menu
+                </li>
                 <li>
                     <a href="/poster_service/php/pages/poster/create_poster.php">Publish new poster</a>
                 </li>
