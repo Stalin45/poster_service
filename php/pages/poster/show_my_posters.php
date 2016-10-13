@@ -19,7 +19,20 @@ include("../../api/poster.php");
 
 $login = $_SESSION['login'];
 
-$result = PostersGetByCurrentUser($login);
+$page = $_GET["page"];
+if ( ! isset($page)) {
+    $page = 0;
+}
+
+$result = PostersGetByCurrentUser($login, $page);
+
+if (isset($result["error"])) {
+    $errors[] = $result["error"];
+    return;
+}
+
+$rows = $result["content"];
+$total_rows = $result["count"];
 
 ?>
 
@@ -30,9 +43,9 @@ $result = PostersGetByCurrentUser($login);
         <div class="content">
             <div class="content-text">
                 <?php
-                echo '<p>You published ' . count($result) . ' poster(s) on our website</p>';
+                echo '<p>You published ' . $total_rows . ' poster(s) on our website</p>';
 
-                if (count($result) > 0) {
+                if (isset($rows)) {
                     echo '<table width="240" border="0" align="center">
                                 <tr>
                                     <th width="50">
@@ -52,7 +65,7 @@ $result = PostersGetByCurrentUser($login);
                                     </th>
                                 </tr>';
 
-                    foreach ($result as $row) {
+                    foreach ($rows as $row) {
                         echo '<tr>
                                 <td>' . $row['name'] . '</td>
                                 <td>' . $row['place'] . '</td>
@@ -71,6 +84,7 @@ $result = PostersGetByCurrentUser($login);
                     echo '</table>';
                 }
 
+                include("../../parts/paging.php");
                 ?>
             </div>
         </div>

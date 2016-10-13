@@ -4,21 +4,63 @@ include("user.php");
 
 function PosterCreate($login, $name, $descr, $place, $date, $img)
 {
+    $result_array = array(
+        "content" => null,
+        "error" => null,
+    );
+
     $user_id = UserGetByName($login);
-    $result = ExecuteUpdateQuery("INSERT INTO event (name, description, place, date, img_ref, user_id) VALUES('$name', '$descr', '$place', '$date', '$img', '$user_id')");
-    return $result;
+    if ( ! $user_id) {
+        $result_array["error"] = 'Could not get data: ' . mysql_error();
+        return $result_array;
+    }
+
+    $rows = ExecuteUpdateQuery("INSERT INTO event (name, description, place, date, img_ref, user_id) VALUES('$name', '$descr', '$place', '$date', '$img', '$user_id')");
+    if( ! $rows ) {
+        $result_array["error"] = 'Could not get data: ' . mysql_error();
+        return $result_array;
+    }
+
+    $result_array["content"] = $rows;
+    return $result_array;
 }
 
-function PostersGetByCurrentUser($login) {
-    $user_id = UserGetByName($login);
-    $result = ExecuteSelectQuery("SELECT * FROM event WHERE user_id = '$user_id'");
-    return $result;
-}
+function PostersGetByCurrentUser($login, $page) {
+    $rec_limit = 1;
+    if( ! isset($page)) {
+        $page = 0;
+    }
+    $offset = $rec_limit * $page ;
 
-function PostersGetByUserName($user_name) {
-    $user_id = UserGetByName($user_name);
-    $result = ExecuteSelectQuery("SELECT * FROM event WHERE user_id = '$user_id'");
-    return $result;
+    $result_array = array(
+        "content" => null,
+        "count" => null,
+        "error" => null,
+    );
+
+    $user_id = UserGetByName($login);
+    if ( ! $user_id) {
+        $result_array["error"] = 'Could not get data: ' . mysql_error();
+        return $result_array;
+    }
+
+    $row_count = ExecuteSelectGetCount("SELECT count(1) FROM event WHERE user_id = '$user_id'");
+    if( ! $row_count ) {
+        $result_array["error"] = 'Can not find any posters';
+        return $result_array;
+    }
+
+    $rows = ExecuteSelectQuery("SELECT * FROM event WHERE user_id = '$user_id'
+                                LIMIT $offset, $rec_limit");
+    if( ! $rows ) {
+        $result_array["error"] = 'Could not get data: ' . mysql_error();
+        return $result_array;
+    }
+
+    $result_array["content"] = $rows;
+    $result_array["count"] = $row_count;
+    print_r($result_array);
+    return $result_array;
 }
 
 function PosterGetByDate($date) {
@@ -26,9 +68,38 @@ function PosterGetByDate($date) {
     return $result;
 }
 
-function PosterGetAll() {
-    $result = ExecuteSelectQuery("SELECT * FROM event");
-    return $result;
+function PosterGetAll($page) {
+    $rec_limit = 1;
+    if( ! isset($page)) {
+        $page = 0;
+    }
+    $offset = $rec_limit * $page ;
+
+    $result_array = array(
+        "content" => null,
+        "count" => null,
+        "error" => null,
+    );
+
+    $row_count = ExecuteSelectGetCount("SELECT count(1) FROM event");
+
+    if( ! $row_count ) {
+        $result_array["error"] = 'Can not find any posters';
+        return $result_array;
+    }
+
+    $rows = ExecuteSelectQuery("SELECT * FROM event
+                                LIMIT $offset, $rec_limit");
+
+    if( ! $rows ) {
+        $result_array["error"] = 'Could not get data: ' . mysql_error();
+        return $result_array;
+    }
+
+    $result_array["content"] = $rows;
+    $result_array["count"] = $row_count;
+    print_r($result_array);
+    return $result_array;
 }
 
 ?>

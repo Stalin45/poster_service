@@ -7,8 +7,20 @@ $success = array();
 
 include("../../api/poster.php");
 
-$result = PosterGetAll();
+$page = $_GET["page"];
+if ( ! isset($page)) {
+    $page = 0;
+}
 
+$result = PosterGetAll($page);
+
+if (isset($result["error"])) {
+    $errors[] = $result["error"];
+    return;
+}
+
+$rows = $result["content"];
+$total_rows = $result["count"];
 //$json_resp = "$request()";
 //$resp_array = json_decode($url_resp, true);
 
@@ -21,8 +33,8 @@ $result = PosterGetAll();
         <div class="content">
             <div class="content-text">
                 <?php
-                if (count($result) > 0) {
-                    echo '<p>Found ' . count($result) . ' poster(s) on our website</p>';
+                if (isset($rows)) {
+                    echo '<p>Found ' . $total_rows . ' poster(s) on our website</p>';
 
                     echo '<table width="500" border="0" align="center">
                                 <tr>
@@ -43,7 +55,7 @@ $result = PosterGetAll();
                                     </th>
                                 </tr>';
 
-                    foreach ($result as $row) {
+                    foreach ($rows as $row) {
                         echo '<tr>
                                 <td>' . $row['name'] . '</td>
                                 <td>' . $row['place'] . '</td>
@@ -57,6 +69,8 @@ $result = PosterGetAll();
                 } else {
                     echo '<p>Posters not found</p>';
                 }
+
+                include("../../parts/paging.php");
                 ?>
             </div>
         </div>

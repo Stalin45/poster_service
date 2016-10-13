@@ -24,10 +24,28 @@ function ExecuteSelectQuery($SQL)
 
     $resultArray = array();
 
-    while( $row = mysql_fetch_assoc( $rows)){
+    while( $row = mysql_fetch_assoc($rows)){
         $resultArray[] = $row;
     }
 
     return $resultArray;
+}
+
+function ExecuteSelectGetCount($SQL)
+{
+    $con = mysql_connect("localhost", "root", "");
+    mysql_select_db("poster_service_db", $con);
+
+    $count = mysql_query($SQL);
+
+    mysql_close();
+
+    $resultArray = array();
+
+    if( ! $count ) {
+        return false;
+    } else {
+        return mysql_fetch_array($count, MYSQL_NUM )[0];
+    }
 }
 ?>
