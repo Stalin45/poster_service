@@ -47,10 +47,12 @@ if (isset($_FILES['i_img'])) {
 extract($_POST);
 if (isset($submit) && empty($errors)) {
     $result = PosterCreate($login, $i_name, $i_descr, $i_place, $i_date, $destFileName);
-    if ($result) {
-        $success[] = "Successfully created!";
+
+    if (isset($result["error"])) {
+        $errors[] = $result["error"];
+        return;
     } else {
-        $errors[] = "Error occured while creating poster";
+        $success[] = "Successfully created!";
     }
 }
 ?>
@@ -178,7 +180,7 @@ if (isset($submit) && empty($errors)) {
                         <td id="success" colspan="2" class="success">
                             <?php
                             if (count($success) > 0) {
-                                echo $success;
+                                echo implode("<br>", $success);
                             }
                             ?>
                         </td>
