@@ -1,6 +1,4 @@
 <?php
-require_once(dirname(__DIR__)."/api/util/db_util.php");
-include("user.php");
 
 function PosterCreate($login, $name, $descr, $place, $date, $img) { //API method
     $result_array = array(

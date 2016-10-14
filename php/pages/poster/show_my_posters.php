@@ -15,16 +15,14 @@ if (!in_array("user", $_SESSION["roles"])) {
     return;
 }
 
-include("../../api/poster.php");
-
 $login = $_SESSION['login'];
 
-$page = $_GET["page"];
-if ( ! isset($page)) {
-    $page = 0;
+$page = 0;
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
 }
 
-$result = PostersGetByCurrentUser($login, $page);
+$result = SendRPCQuery("PostersGetByCurrentUser", [$login, $page]);
 
 if (isset($result["error"])) {
     $errors[] = $result["error"];

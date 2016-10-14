@@ -8,13 +8,13 @@ if (isset($page) && isset($total_rows)) {
     $next_shown_page = $page + 2;
 
     if ($shown_page > 1) {
-        echo "<a href = \"$_PHP_SELF?page=$previous_page_link\">$previous_shown_page</a> | ";
+        echo "<a href = \"$request_url?page=$previous_page_link\">$previous_shown_page</a> | ";
     }
 
     echo "<b>$shown_page</b>";
 
     if ($shown_page < $total_pages) {
-        echo " | <a href = \"$_PHP_SELF?page=$shown_page\">$next_shown_page</a>";
+        echo " | <a href = \"$request_url?page=$shown_page\">$next_shown_page</a>";
     }
 
     echo " ($total_pages page(s) total)";

@@ -1,17 +1,16 @@
 <?php include("../../parts/header.php");
-include("../../api/user.php");
 
 $errors = array();
 $success = array();
 
 extract($_POST);
 if (isset($submit)) {
-    $registrationData = UserIsRegistered($i_login, $i_password);
+    $registrationData = SendRPCQuery("UserIsRegistered", [$i_login, $i_password]);
     if ($registrationData["registered"]) {
         $_SESSION['authenticated'] = "true";
         $_SESSION['login'] = $i_login;
 
-        $user_roles = UserGetRolesByName($i_login);
+        $user_roles = SendRPCQuery("UserGetRolesByName", [$i_login]);
         if (isset($user_roles["error"])) {
             $errors[] = $user_roles["error"];
         } else {

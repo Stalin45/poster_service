@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vlastelin
- * Date: 09.10.2016
- * Time: 2:16
- */
-require_once(dirname(__DIR__)."/api/util/db_util.php");
 
 function UserGetByName($user_name) {
     $result = ExecuteSelectQuery("SELECT user_id FROM user WHERE login = '$user_name'");

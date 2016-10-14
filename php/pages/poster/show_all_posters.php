@@ -5,30 +5,30 @@
 $errors = array();
 $success = array();
 
-include("../../api/poster.php");
+//include("../util/rpc_client.php");
 
+$page = 0;
 extract($_POST);
 if (isset($submit)) {
     $datetime = $i_date . ' ' . $i_time;
-    $page = 0;
-    $result = PosterGetByDate($datetime, $page, $date_filter);
+
+    $result = SendRPCQuery("PosterGetByDate", [$datetime, $page, $date_filter]);
 
     if ( ! isset($result["error"])) {
         $_SESSION["datetime"] = $datetime;
         $_SESSION["date_filter"] = $date_filter;
     }
 } else {
-    $page = $_GET["page"];
-    if ( ! isset($page)) {
-        $page = 0;
+    if (isset($_GET["page"])) {
+        $page = $_GET["page"];
     }
 
     if (isset($_SESSION["datetime"]) && isset($_SESSION["date_filter"])) {
         $datetime = $_SESSION["datetime"];
         $date_filter = $_SESSION["date_filter"];
-        $result = PosterGetByDate($datetime, $page, $date_filter);
+        $result = SendRPCQuery("PosterGetByDate", [$datetime, $page, $date_filter]);
     } else {
-        $result = PosterGetAll($page);
+        $result = SendRPCQuery("PosterGetAll", [$page]);
     }
 }
 
@@ -38,8 +38,6 @@ if (isset($result["error"])) {
 
 $rows = $result["content"];
 $total_rows = $result["count"];
-//$json_resp = "$request()";
-//$resp_array = json_decode($url_resp, true);
 
 ?>
 

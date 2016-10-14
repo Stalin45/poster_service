@@ -1,13 +1,12 @@
 <?php
 include("../../parts/header.php");
-include("../../api/user.php");
 
 $errors = array();
 $success = array();
 
 extract($_POST);
 if (isset($submit)) {
-    $result = UserCreateRegistered($i_login, $i_password, $i_email);
+    $result = SendRPCQuery("UserCreateRegistered", [$i_login, $i_password, $i_email]);
 
     if (isset($result["error"])) {
         $errors[] = $result["error"];
@@ -43,6 +42,7 @@ if (isset($submit)) {
                 }
             }
 
+            //TODO: make RegEx checking
             if (document.sign_up_form.i_email.value == "") {
                 errors.push("Email address is empty");
                 document.sign_up_form.i_email.focus();

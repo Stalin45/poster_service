@@ -14,8 +14,6 @@ if (!in_array("user", $_SESSION["roles"])) {
     return;
 }
 
-include("../../api/poster.php");
-
 $login = $_SESSION['login'];
 
 if (isset($_FILES['i_img'])) {
@@ -23,7 +21,8 @@ if (isset($_FILES['i_img'])) {
     $file_size = $_FILES['i_img']['size'];
     $file_tmp = $_FILES['i_img']['tmp_name'];
     $file_type = $_FILES['i_img']['type'];
-    $file_ext = strtolower(end(explode('.', $file_name)));
+    $tmp = explode('.', $file_name);
+    $file_ext = strtolower(end($tmp));
 
     $expensions = array("jpeg", "jpg", "png");
 
@@ -47,7 +46,7 @@ if (isset($_FILES['i_img'])) {
 extract($_POST);
 if (isset($submit) && empty($errors)) {
     $datetime = $i_date . ' ' . $i_time;
-    $result = PosterCreate($login, $i_name, $i_descr, $i_place, $datetime, $destFileName);
+    $result = SendRPCQuery("PosterCreate", [$login, $i_name, $i_descr, $i_place, $datetime, $destFileName]);
 
     if (isset($result["error"])) {
         $errors[] = $result["error"];
