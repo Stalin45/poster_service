@@ -8,10 +8,15 @@ $success = array();
 extract($_POST);
 if (isset($submit)) {
     $result = UserCreateRegistered($i_login, $i_password, $i_email);
-    if ($result) {
-        $success[] = "Successfully registered!";
+
+    if (isset($result["error"])) {
+        $errors[] = $result["error"];
     } else {
-        $errors[] = "Error occred while registering";
+        if ($result["content"]) {
+            $success[] = "Successfully registered!";
+        } else {
+            $errors[] = "Error occured while registering";
+        }
     }
 }
 ?>

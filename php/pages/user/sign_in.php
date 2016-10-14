@@ -6,11 +6,18 @@ $success = array();
 
 extract($_POST);
 if (isset($submit)) {
-    if (UserIsRegistered($i_login, $i_password)) {
+    $registrationData = UserIsRegistered($i_login, $i_password);
+    if ($registrationData["registered"]) {
         $_SESSION['authenticated'] = "true";
         $_SESSION['login'] = $i_login;
-        $_SESSION['roles'] = UserGetRolesByName($i_login);
-        header("location: ../../../index.php");
+
+        $user_roles = UserGetRolesByName($i_login);
+        if (isset($user_roles["error"])) {
+            $errors[] = $user_roles["error"];
+        } else {
+            $_SESSION['roles'] = $user_roles["content"];
+            header("location: ../../../index.php");
+        }
     } else {
         $errors[] = "Invalid User Name or Password";
     }

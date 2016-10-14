@@ -2,8 +2,7 @@
 require_once(dirname(__DIR__)."/api/util/db_util.php");
 include("user.php");
 
-function PosterCreate($login, $name, $descr, $place, $date, $img)
-{
+function PosterCreate($login, $name, $descr, $place, $date, $img) { //API method
     $result_array = array(
         "content" => null,
         "error" => null,
@@ -25,7 +24,7 @@ function PosterCreate($login, $name, $descr, $place, $date, $img)
     return $result_array;
 }
 
-function PostersGetByCurrentUser($login, $page) {
+function PostersGetByCurrentUser($login, $page) { //API method
     $rec_limit = 1;
     if( ! isset($page)) {
         $page = 0;
@@ -62,7 +61,7 @@ function PostersGetByCurrentUser($login, $page) {
     return $result_array;
 }
 
-function PosterGetAll($page) {
+function PosterGetAll($page) { //API method
     $rec_limit = 1;
     if( ! isset($page)) {
         $page = 0;
@@ -95,7 +94,7 @@ function PosterGetAll($page) {
     return $result_array;
 }
 
-function PosterGetByDate($date, $page, $period) {
+function PosterGetByDate($date, $page, $period) { //API method
     $rec_limit = 1;
     if( ! isset($page)) {
         $page = 0;
