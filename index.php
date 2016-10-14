@@ -5,7 +5,7 @@
 
     <div class="content">
         <div class="content-text">
-            <p>I am the page content</p>
+            <p>Welcome to the poster service!</p>
         </div>
     </div>
 </div>

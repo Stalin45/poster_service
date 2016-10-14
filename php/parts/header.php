@@ -25,7 +25,7 @@
                     if (isset($_SESSION["authenticated"])) {
                         echo "<p>Hello, ".$_SESSION['login']."</p>";
                     } else {
-                        echo "Sugn in block";
+                        echo "Sign in block";
                     }
                 ?>
             </div>
