@@ -46,21 +46,21 @@ $total_rows = $result["count"];
                 echo '<p>You published ' . $total_rows . ' poster(s) on our website</p>';
 
                 if (isset($rows)) {
-                    echo '<table width="240" border="0" align="center">
+                    echo '<table width="500" border="0" align="center">
                                 <tr>
-                                    <th width="50">
+                                    <th width="100">
                                         Name
                                     </th>
-                                    <th width="50">
+                                    <th width="100">
                                         Place
                                     </th>
-                                    <th width="50">
+                                    <th width="100">
                                         Date
                                     </th>
-                                    <th width="50">
+                                    <th width="100">
                                         Description
                                     </th>
-                                    <th width="40">
+                                    <th width="100">
                                         IMG
                                     </th>
                                 </tr>';
@@ -76,9 +76,9 @@ $total_rows = $result["count"];
                     }
 
                     if (count($errors) > 0) {
-                        echo '<tr><td id="error" colspan="2" class="error">';
-                        implode("<br>", $errors);
-                        echo '</td></tr>';
+                        echo '<tr><td id="error" colspan="2" class="error">
+                                '.implode("<br>", $errors).'
+                              </td></tr>';
                     }
 
                     echo '</table>';

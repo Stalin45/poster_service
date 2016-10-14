@@ -46,7 +46,8 @@ if (isset($_FILES['i_img'])) {
 
 extract($_POST);
 if (isset($submit) && empty($errors)) {
-    $result = PosterCreate($login, $i_name, $i_descr, $i_place, $i_date, $destFileName);
+    $datetime = $i_date . ' ' . $i_time;
+    $result = PosterCreate($login, $i_name, $i_descr, $i_place, $datetime, $destFileName);
 
     if (isset($result["error"])) {
         $errors[] = $result["error"];
@@ -144,7 +145,8 @@ if (isset($submit) && empty($errors)) {
                             </div>
                         </td>
                         <td>
-                            <input name="i_date" type="text" id="i_date">
+                            <input type="date" id="i_date" name="i_date" value="<?php echo date("Y-m-d"); ?>">
+                            <input type="time" id="i_time" name="i_time" value="<?php echo date("H:s"); ?>">
                         </td>
                     </tr>
                     <tr>

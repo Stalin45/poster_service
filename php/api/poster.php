@@ -59,13 +59,7 @@ function PostersGetByCurrentUser($login, $page) {
 
     $result_array["content"] = $rows;
     $result_array["count"] = $row_count;
-    print_r($result_array);
     return $result_array;
-}
-
-function PosterGetByDate($date) {
-    $result = ExecuteSelectQuery("SELECT * FROM event WHERE date >= '$date' AND date < '$date' + INTERVAL 1 DAY");
-    return $result;
 }
 
 function PosterGetAll($page) {
@@ -98,8 +92,38 @@ function PosterGetAll($page) {
 
     $result_array["content"] = $rows;
     $result_array["count"] = $row_count;
-    print_r($result_array);
     return $result_array;
 }
 
+function PosterGetByDate($date, $page, $period) {
+    $rec_limit = 1;
+    if( ! isset($page)) {
+        $page = 0;
+    }
+    $offset = $rec_limit * $page ;
+
+    $result_array = array(
+        "content" => null,
+        "count" => null,
+        "error" => null,
+    );
+
+    $row_count = ExecuteSelectGetCount("SELECT count(1) FROM event WHERE date >= '$date' AND date < '$date' + INTERVAL 1 $period");
+
+    if( ! $row_count ) {
+        $result_array["error"] = 'Can not find any posters';
+        return $result_array;
+    }
+
+    $rows = ExecuteSelectQuery("SELECT * FROM event WHERE date >= '$date' AND date < '$date' + INTERVAL 1 $period
+                                LIMIT $offset, $rec_limit");
+    if( ! $rows ) {
+        $result_array["error"] = 'Could not get data: ' . mysql_error();
+        return $result_array;
+    }
+
+    $result_array["content"] = $rows;
+    $result_array["count"] = $row_count;
+    return $result_array;
+}
 ?>
