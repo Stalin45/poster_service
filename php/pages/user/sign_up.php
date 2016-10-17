@@ -1,25 +1,87 @@
 <?php
 include("../../parts/header.php");
-
-$errors = array();
-$success = array();
-
-extract($_POST);
-if (isset($submit)) {
-    $result = SendRPCQuery("UserCreateRegistered", [$i_login, $i_password, $i_email]);
-
-    if (isset($result["error"])) {
-        $errors[] = $result["error"];
-    } else {
-        if ($result["content"]) {
-            $success[] = "Successfully registered!";
-        } else {
-            $errors[] = "Error occured while registering";
-        }
-    }
-}
+//
+//$errors = array();
+//$success = array();
+//
+//extract($_POST);
+//if (isset($submit)) {
+//    $result = SendRPCQuery("UserCreateRegistered", [$i_login, $i_password, $i_email]);
+//
+//    if (isset($result["error"])) {
+//        $errors[] = $result["error"];
+//    } else {
+//        if ($result["content"]) {
+//            $success[] = "Successfully registered!";
+//        } else {
+//            $errors[] = "Error occured while registering";
+//        }
+//    }
+//}
 ?>
-    <script language="javascript">
+
+    <script type="application/javascript">
+        function submitSignUpForm() {
+            if (check()) {
+                var login = document.getElementById("i_login").value;
+                var password = document.getElementById("i_password").value;
+                var email = document.getElementById("i_email").value;
+                sendAJAX("UserCreateRegistered", [login, password, email]);
+            }
+        }
+
+        function sendAJAX(method, args) {
+            var content = JSON.stringify({"method" : method, "params" : args});
+            var ajax_request;
+            try {
+                // Opera 8.0+, Firefox, Chrome, Safari
+                ajax_request = new XMLHttpRequest();
+            } catch (e) {
+                // Internet Explorer Browsers
+                try {
+                    ajax_request = new ActiveXObject("Msxml2.XMLHTTP");
+                } catch (e) {
+                    try {
+                        ajax_request = new ActiveXObject("Microsoft.XMLHTTP");
+                    } catch (e) {
+                        return false;
+                    }
+
+                }
+            }
+
+            var status_div = document.getElementById("status");
+            var error_div = document.getElementById("error");
+            ajax_request.onreadystatechange = function () {
+                if (ajax_request.readyState == 4) {
+                    if (ajax_request.status === 200) {
+                        var result = JSON.parse(ajax_request.responseText);
+                        if (result.error) {
+                            error_div.innerHTML = result.error;
+                        } else {
+                            if (result.content) {
+                                status_div.innerHTML = result.content;
+                            } else {
+                                status_div.innerHTML = "";
+                                error_div.innerHTML = "Error occured";
+                            }
+                        }
+                    } else {
+                        status_div.innerHTML = "";
+                        error_div.innerHTML = "Error occured";
+                    }
+
+                } else {
+                    status_div.innerHTML = status_div.innerHTML + '.';
+                }
+            };
+
+            ajax_request.open("POST", "/php/api/prc_server.php", true);
+            ajax_request.setRequestHeader('Content-Type', 'Content-type: application/json');
+            status_div = "Waiting for the server";
+            ajax_request.send(content);
+        }
+
         function check() {
             var errors = [];
             if (document.sign_up_form.i_login.value == "") {
@@ -79,77 +141,28 @@ if (isset($submit)) {
                 <p>As registered user you will be able to publish your own posters!</p>
             </div>
 
-            <form name="sign_up_form" method="post" action="" onSubmit="return check();">
-                <table width="240" border="0" align="center">
-                    <tr>
-                        <td width="100">
-                            <div align="center">
-                                <label for="i_login">Login: </label>
-                            </div>
-                        </td>
-                        <td width="140">
-                            <input name="i_login" type="text" id="i_login">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div align="center">
-                                <label for="i_email">Email: </label>
-                            </div>
-                        </td>
-                        <td>
-                            <input name="i_email" type="text" id="i_email">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div align="center">
-                                <label for="i_password">Password: </label>
-                            </div>
-                        </td>
-                        <td>
-                            <input name="i_password" type="password" id="i_password">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div align="center">
-                                <label for="i_cpassword">Confirm Password: </label>
-                            </div>
-                        </td>
-                        <td>
-                            <input name="i_cpassword" type="password" id="i_cpassword">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <label>
-                                <br>
-                                <center>
-                                    <input name="submit" type="submit" id="submit" value="Create Account">
-                                </center>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="error" colspan="2" class="error">
-                            <?php
-                            if (count($errors) > 0) {
-                                echo implode("<br>", $errors);
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="success" colspan="2" class="success">
-                            <?php
-                            if (count($success) > 0) {
-                                echo implode("<br>", $success);
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                </table>
+            <form name="sign_up_form">
+                <div>
+                    <label for="i_login">Login: </label>
+                    <input name="i_login" type="text" id="i_login">
+                </div>
+                <div>
+                    <label for="i_email">Email: </label>
+                    <input name="i_email" type="text" id="i_email">
+                </div>
+                <div>
+                    <label for="i_password">Password: </label>
+                    <input name="i_password" type="password" id="i_password">
+                </div>
+                <div>
+                    <label for="i_cpassword">Confirm Password: </label>
+                    <input name="i_cpassword" type="password" id="i_cpassword">
+                </div>
+                <div>
+                    <button name="submit" type="submit" onclick="submitSignUpForm()">Create Account</button>
+                </div>
+                <div id="error" class="error"></div>
+                <div id="status" class="status"></div>
             </form>
         </div>
     </div>
