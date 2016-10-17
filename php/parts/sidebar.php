@@ -9,10 +9,10 @@
                     Author menu
                 </li>
                 <li>
-                    <a href="'.$base_url.'/php/pages/poster/create_poster.php">Publish new poster</a>
+                    <a href="'.BASE_URL.'/php/pages/poster/create_poster.php">Publish new poster</a>
                 </li>
                 <li>
-                    <a href="'.$base_url.'/php/pages/poster/show_my_posters.php">See my posters</a>
+                    <a href="'.BASE_URL.'/php/pages/poster/show_my_posters.php">See my posters</a>
                 </li>
             </ul>
         </div>';
@@ -26,10 +26,10 @@
                 User menu
             </li>
             <li>
-                <a href="<?php echo $base_url; ?>/php/pages/poster/show_all_posters.php">Show posters</a>
+                <a href="<?php echo BASE_URL; ?>/php/pages/poster/show_all_posters.php">Show posters</a>
             </li>
             <li>
-                <a href="<?php echo $base_url; ?>/php/pages/about.php">About</a>
+                <a href="<?php echo BASE_URL; ?>/php/pages/about.php">About</a>
             </li>
 
             <?php
@@ -37,17 +37,17 @@
                 echo
                 '
                 <li>
-                    <a href="'.$base_url.'/php/pages/user/sign_up.php">Sign Up</a>
+                    <a href="'.BASE_URL.'/php/pages/user/sign_up.php">Sign Up</a>
                 </li>
                 <li>
-                    <a href="'.$base_url.'/php/pages/user/sign_in.php">Sign In</a>
+                    <a href="'.BASE_URL.'/php/pages/user/sign_in.php">Sign In</a>
                 </li>';
             }
 
             if (isset($_SESSION["authenticated"])) {
                 echo
                 '<li>
-                    <a href="'.$base_url.'/php/pages/user/sign_out.php">Sign Out</a>
+                    <a href="'.BASE_URL.'/php/pages/user/sign_out.php">Sign Out</a>
                 </li>';
             }
             ?>

@@ -1,9 +1,8 @@
 <?php
     require_once(dirname(__DIR__)."/pages/util/rpc_client.php");
+    require(dirname(__DIR__)."/pages/util/client_constants.php");
     ob_start();
     session_start();
-    $base_url = "http://$_SERVER[HTTP_HOST]/poster_service";
-    $request_url = "http://$_SERVER[HTTP_HOST]".strtok($_SERVER["REQUEST_URI"],'?');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -13,7 +12,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>Poster service</title>
-    <link rel="stylesheet" href="<?php echo $base_url; ?>/resources/css/style.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/css/style.css" type="text/css" media="screen"/>
 </head>
 
 <body>

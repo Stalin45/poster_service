@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS event
   event_id SERIAL,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(255),
-  place VARCHAR(255) NOT NULL,
+  place VARCHAR(100) NOT NULL,
   date TIMESTAMP NOT NULL DEFAULT NOW(),
   img_ref VARCHAR(255),
   user_id BIGINT UNSIGNED NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS user
 (
   user_id SERIAL,
   login VARCHAR(20) NOT NULL,
-  pass VARCHAR(6) NOT NULL,
+  pass VARCHAR(30) NOT NULL,
   email VARCHAR(50) DEFAULT NULL,
   constraint pk_user_id primary key (user_id),
   constraint uc_login unique (login)

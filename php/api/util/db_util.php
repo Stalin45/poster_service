@@ -1,30 +1,23 @@
 <?php
+require ("api_constants.php");
 error_reporting(1);
 
 function ExecuteUpdateQuery($SQL)
 {
-    $con = mysql_connect("localhost", "root", "");
-    mysql_select_db("poster_service_db", $con);
-
-    $result = mysql_query($SQL);
-
-    mysql_close();
-
+    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+    mysqli_real_escape_string($SQL);
+    $result = mysqli_query($con, $SQL);
+    mysqli_close($con);
     return $result;
 }
 
 function ExecuteSelectQuery($SQL)
 {
-    $con = mysql_connect("localhost", "root", "");
-    mysql_select_db("poster_service_db", $con);
-
-    $rows = mysql_query($SQL);
-
-    mysql_close();
-
+    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+    $rows = mysqli_query($con, $SQL);
+    mysqli_close($con);
     $resultArray = array();
-
-    while( $row = mysql_fetch_assoc($rows)){
+    while( $row = mysqli_fetch_assoc($rows)){
         $resultArray[] = $row;
     }
 
@@ -33,19 +26,14 @@ function ExecuteSelectQuery($SQL)
 
 function ExecuteSelectGetCount($SQL)
 {
-    $con = mysql_connect("localhost", "root", "");
-    mysql_select_db("poster_service_db", $con);
-
-    $count = mysql_query($SQL);
-
-    mysql_close();
-
+    $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+    $count = mysqli_query($con, $SQL);
+    mysqli_close($con);
     $resultArray = array();
-
     if( ! $count ) {
         return false;
     } else {
-        return mysql_fetch_array($count, MYSQL_NUM )[0];
+        return mysqli_fetch_array($count, MYSQLI_NUM )[0];
     }
 }
 ?>

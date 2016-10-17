@@ -63,6 +63,7 @@ $total_rows = $result["count"];
                                     </th>
                                 </tr>';
 
+//                    TODO: JS updatable
                     foreach ($rows as $row) {
                         echo '<tr>
                                 <td>' . $row['name'] . '</td>

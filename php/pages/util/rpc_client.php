@@ -14,7 +14,7 @@ function SendRPCQuery($method, $args)
         'content' => $request
     )));
 
-    $url = "http://".$_SERVER['SERVER_NAME']."/poster_service/php/api/prc_server.php";
+    $url = "http://".$_SERVER['SERVER_NAME'].APPLICATION_URL_PREFIX."/php/api/prc_server.php";
 
     if ($fp = fopen($url, 'r', false, $context)) {
         $response = '';

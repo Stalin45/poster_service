@@ -5,8 +5,6 @@
 $errors = array();
 $success = array();
 
-//include("../util/rpc_client.php");
-
 $page = 0;
 extract($_POST);
 if (isset($submit)) {
@@ -69,6 +67,7 @@ $total_rows = $result["count"];
                     </form>
                 </div>
                 <?php
+//                TODO: JS updatable
                 if (isset($rows)) {
                     echo '<p>Found ' . $total_rows . ' poster(s) on our website</p>';
                     if (isset($_SESSION["datetime"]) && isset($_SESSION["date_filter"])) {
@@ -93,13 +92,14 @@ $total_rows = $result["count"];
                                     </th>
                                 </tr>';
 
+//                    TODO: JS updatable
                     foreach ($rows as $row) {
                         echo '<tr>
                                 <td>' . $row['name'] . '</td>
                                 <td>' . $row['place'] . '</td>
                                 <td>' . $row['date'] . '</td>
                                 <td>' . $row['description'] . '</td>
-                                <td><img src="/poster_service/upload/' . $row['img_ref'] . '" width="100" height="100"  ></td>
+                                <td><img src="'.APPLICATION_URL_PREFIX.'/upload/'.$row['img_ref'].'" width="100" height="100"  ></td>
                               </tr>';
                     }
 
