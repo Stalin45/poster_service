@@ -76,7 +76,7 @@ include("../../parts/header.php");
                 }
             };
 
-            ajax_request.open("POST", "/php/api/prc_server.php", true);
+            ajax_request.open("POST", "/php/api/rpc_server.php", true);
             ajax_request.setRequestHeader('Content-Type', 'Content-type: application/json');
             status_div = "Waiting for the server";
             ajax_request.send(content);

@@ -23,7 +23,7 @@ function UserGetRolesByName($user_name) { //API method
     );
 
     if ( ! isset($user_name) ||
-        strlen($user_name) < 4 ||
+        strlen($user_name) < 1 ||
         strlen($user_name) > 20 ||
         preg_match(FORBIDDEN_CHARACTER_PATTERN, $user_name)) {
         $result_array["error"] = 'Validation error: user name value is incorrect';
@@ -107,7 +107,7 @@ function UserIsRegistered($login, $pass) { //API method
     );
 
     if ( ! isset($login) ||
-        strlen($login) < 4 ||
+        strlen($login) < 1 ||
         strlen($login) > 20 ||
         preg_match(FORBIDDEN_CHARACTER_PATTERN, $login)) {
         $result_array["error"] = 'Validation error: login value is incorrect';
@@ -116,14 +116,14 @@ function UserIsRegistered($login, $pass) { //API method
 
     //TODO: make MD5 value instead
     if ( ! isset($pass) ||
-        strlen($pass) < 7 ||
+        strlen($pass) < 1 ||
         strlen($pass) > 30 ||
         preg_match(FORBIDDEN_CHARACTER_PATTERN, $pass)) {
         $result_array["error"] = 'Validation error: password value is incorrect';
         return $result_array;
     }
 
-    $rows = ExecuteSelectQuery("SELECT user_id FROM user WHERE login = '$login' AND pass = '$password'");
+    $rows = ExecuteSelectQuery("SELECT user_id FROM user WHERE login = '$login' AND pass = '$pass'");
 
     if (count($rows) > 0) {
         $result_array["registered"] = true;

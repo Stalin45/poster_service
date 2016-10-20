@@ -26,12 +26,10 @@ $result = SendRPCQuery("PostersGetByCurrentUser", [$login, $page]);
 
 if (isset($result["error"])) {
     $errors[] = $result["error"];
-    return;
+} else {
+    $rows = $result["content"];
+    $total_rows = $result["count"];
 }
-
-$rows = $result["content"];
-$total_rows = $result["count"];
-
 ?>
 
     <div class="container">

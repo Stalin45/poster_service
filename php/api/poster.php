@@ -39,8 +39,8 @@ function PosterCreate($login, $name, $descr, $place, $date, $img) { //API method
     }
 
     if ( ! isset($date) ||
-        is_date($date) ||
-        is_in_past($date)) {
+         ! strtotime($date) ||
+           strtotime($date) < time()) {
         $result_array["error"] = 'Validation error: date value is incorrect';
         return $result_array;
     }
@@ -160,11 +160,22 @@ function PosterGetByDate($date, $page, $period) { //API method
         "error" => null,
     );
 
+    if (!isset($period) ||
+        !in_array($period, ["day", "month"])
+    ) {
+        $result_array["error"] = 'Validation error: period value is incorrect';
+        return $result_array;
+    }
+
     if ( ! isset($date) ||
-        is_date($date) ||
-        is_in_past($date)) {
+         ! strtotime($date) ||
+           strtotime($date.' +1 '.$period) < strtotime(date('Y-m-d H:i'))) {
         $result_array["error"] = 'Validation error: date value is incorrect';
         return $result_array;
+    } else {
+        if (strtotime($date.' +1 '.$period) < strtotime(date('Y-m-d H:i'))) {
+            $date = date('Y-m-d H:i');
+        }
     }
 
     if (isset($page)) {
@@ -175,13 +186,6 @@ function PosterGetByDate($date, $page, $period) { //API method
         }
     } else {
         $page = 0;
-    }
-
-    if (!isset($period) ||
-        !in_array($period, ["DAY", "MONTH"])
-    ) {
-        $result_array["error"] = 'Validation error: period value is incorrect';
-        return $result_array;
     }
 
     $rec_limit = 1;

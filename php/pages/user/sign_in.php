@@ -6,19 +6,23 @@ $success = array();
 extract($_POST);
 if (isset($submit)) {
     $registrationData = SendRPCQuery("UserIsRegistered", [$i_login, $i_password]);
-    if ($registrationData["registered"]) {
-        $_SESSION['authenticated'] = "true";
-        $_SESSION['login'] = $i_login;
-
-        $user_roles = SendRPCQuery("UserGetRolesByName", [$i_login]);
-        if (isset($user_roles["error"])) {
-            $errors[] = $user_roles["error"];
-        } else {
-            $_SESSION['roles'] = $user_roles["content"];
-            header("location: ../../../index.php");
-        }
+    if (isset($registrationData["error"])) {
+        $errors[] = $registrationData["error"];
     } else {
-        $errors[] = "Invalid User Name or Password";
+        if ($registrationData["registered"]) {
+            $_SESSION['authenticated'] = "true";
+            $_SESSION['login'] = $i_login;
+
+            $user_roles = SendRPCQuery("UserGetRolesByName", [$i_login]);
+            if (isset($user_roles["error"])) {
+                $errors[] = $user_roles["error"];
+            } else {
+                $_SESSION['roles'] = $user_roles["content"];
+                header("location: ../../../index.php");
+            }
+        } else {
+            $errors[] = "Invalid User Name or Password";
+        }
     }
 }
 ?>
@@ -45,7 +49,8 @@ if (isset($submit)) {
         }
     </script>
 
-    <div class="container">
+    <div class="container-fluid">
+        <div class="row">
 
         <?php include("../../parts/sidebar.php"); ?>
 
@@ -105,5 +110,6 @@ if (isset($submit)) {
             </div>
         </div>
     </div>
+        </div>
 
 <?php include("../../parts/footer.php"); ?>
